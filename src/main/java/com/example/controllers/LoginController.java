@@ -1,11 +1,12 @@
-package com.example.servlets;
+package com.example.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import com.example.utils.DBController;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -15,10 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/TeleworkReservations";
-    private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "postgres";
+public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -31,8 +29,7 @@ public class LoginServlet extends HttpServlet {
 
         // データベースのユーザー認証ロジック
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            Connection connection = DBController.getConnection();
 
             String sql = "SELECT * FROM employees WHERE email = ? AND password = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -42,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/top.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
                 dispatcher.forward(request, response);
             } else {
                 response.sendRedirect("index.html");
