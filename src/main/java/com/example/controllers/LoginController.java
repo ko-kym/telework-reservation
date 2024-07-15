@@ -25,8 +25,6 @@ public class LoginController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        response.setContentType("text/html");
-
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -40,6 +38,7 @@ public class LoginController extends HttpServlet {
 
             resultSet = statement.executeQuery();
 
+            response.setContentType("text/html");
             if (resultSet.next()) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
                 dispatcher.forward(request, response);
@@ -57,7 +56,7 @@ public class LoginController extends HttpServlet {
                 statement.close();
                 connection.close();
             } catch (SQLException eSql) {
-                eSql.printStackTrace();
+                e.printStackTrace();
             }
 
         }
