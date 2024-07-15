@@ -1,4 +1,4 @@
-package com.example;
+package com.example.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -40,9 +41,8 @@ public class LoginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-//            	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/top.html");
-//                dispatcher.forward(request, response); 
-            	response.sendRedirect("top.html");
+           	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/top.jsp");
+               dispatcher.forward(request, response); 
             } else {
             	response.sendRedirect("index.html");
             }
