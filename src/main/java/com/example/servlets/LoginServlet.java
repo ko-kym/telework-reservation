@@ -21,7 +21,8 @@ public class LoginServlet extends HttpServlet {
     private static final String DB_PASSWORD = "postgres";
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -33,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ?;";
+            String sql = "SELECT * FROM employees WHERE email = ? AND password = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             statement.setString(2, password);
@@ -41,10 +42,10 @@ public class LoginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-           	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/top.jsp");
-               dispatcher.forward(request, response); 
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/top.jsp");
+                dispatcher.forward(request, response);
             } else {
-            	response.sendRedirect("index.html");
+                response.sendRedirect("index.html");
             }
 
             resultSet.close();
