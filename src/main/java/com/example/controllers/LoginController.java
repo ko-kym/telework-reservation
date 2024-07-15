@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.example.utils.DBController;
 
@@ -25,18 +26,19 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
 
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
         // データベースのユーザー認証ロジック
         try {
-            Connection connection = DBController.getConnection();
-
             String sql = "SELECT * FROM employees WHERE email = ? AND password = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            connection = DBController.getConnection();
+            statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             statement.setString(2, password);
 
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
@@ -50,7 +52,14 @@ public class LoginController extends HttpServlet {
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("データベース接続エラー: " + e.getMessage());
+            try {
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException eSql) {
+                eSql.printStackTrace();
+            }
+
         }
     }
 
