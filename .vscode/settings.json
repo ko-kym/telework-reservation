@@ -7,7 +7,7 @@
             "port": 5432,
             "driver": "PostgreSQL",
             "name": "postgres",
-            "database": "TeleworkReservations",
+            "database": "teleworkreservations",
             "username": "postgres",
             "password": "postgres"
         }
