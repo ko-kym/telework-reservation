@@ -6,9 +6,33 @@
     <servlet-name>LoginController</servlet-name>
     <servlet-class>com.example.controllers.LoginController</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LogoutController</servlet-name>
+    <servlet-class>com.example.controllers.LogoutController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ReservationController</servlet-name>
+    <servlet-class>com.example.controllers.ReservationController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RequestController</servlet-name>
+    <servlet-class>com.example.controllers.RequestController</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/LoginController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LogoutController</servlet-name>
+    <url-pattern>/LogoutController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReservationController</servlet-name>
+    <url-pattern>/ReservationController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RequestController</servlet-name>
+    <url-pattern>/RequestController</url-pattern>
   </servlet-mapping>
   <display-name>TeleworkReservation</display-name>
   <welcome-file-list>
