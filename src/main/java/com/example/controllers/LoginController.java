@@ -30,7 +30,7 @@ public class LoginController extends HttpServlet {
         ResultSet resultSet = null;
         // データベースのユーザー認証ロジック
         try {
-            String sql = "SELECT employee_id,email FROM employees WHERE email = ? AND password = ?;";
+            String sql = "SELECT employee_id,email,role FROM employees WHERE email = ? AND password = ?;";
             connection = DBController.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
@@ -41,11 +41,18 @@ public class LoginController extends HttpServlet {
             response.setContentType("text/html");
             if (resultSet.next()) {
                 String employeeId = resultSet.getString("employee_id");
+
                 HttpSession session = request.getSession();
                 session.setAttribute("employeeId", employeeId);
 
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
+                String role = resultSet.getString("role");
+                String jsp = role.equals("ADMIN") 
+                    ? "/WEB-INF/view/manager.jsp" 
+                    :  "/WEB-INF/view/calendar.jsp";
+
+                RequestDispatcher dispatcher = request.getRequestDispatcher(jsp);
                 dispatcher.forward(request, response);
+
             } else {
                 response.sendRedirect("index.html");
             }
