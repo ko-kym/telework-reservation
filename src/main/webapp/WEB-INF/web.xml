@@ -18,6 +18,10 @@
     <servlet-name>RequestController</servlet-name>
     <servlet-class>com.example.controllers.RequestController</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>EmployeeController</servlet-name>
+    <servlet-class>com.example.controllers.EmployeeController</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/LoginController</url-pattern>
@@ -33,6 +37,10 @@
   <servlet-mapping>
     <servlet-name>RequestController</servlet-name>
     <url-pattern>/RequestController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EmployeeController</servlet-name>
+    <url-pattern>/EmployeeController</url-pattern>
   </servlet-mapping>
   <display-name>TeleworkReservation</display-name>
   <welcome-file-list>
