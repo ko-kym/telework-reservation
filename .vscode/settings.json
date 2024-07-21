@@ -6,7 +6,7 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "postgres",
+            "name": "postgres-in-wsl",
             "database": "teleworkreservations",
             "username": "postgres",
             "password": "postgres"
