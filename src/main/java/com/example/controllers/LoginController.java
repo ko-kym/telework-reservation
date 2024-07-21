@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -29,7 +30,7 @@ public class LoginController extends HttpServlet {
         ResultSet resultSet = null;
         // データベースのユーザー認証ロジック
         try {
-            String sql = "SELECT * FROM employees WHERE email = ? AND password = ?;";
+            String sql = "SELECT employee_id,email FROM employees WHERE email = ? AND password = ?;";
             connection = DBController.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
@@ -39,25 +40,30 @@ public class LoginController extends HttpServlet {
 
             response.setContentType("text/html");
             if (resultSet.next()) {
+                String employeeId = resultSet.getString("employee_id");
+                HttpSession session = request.getSession();
+                session.setAttribute("employeeId", employeeId);
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
                 dispatcher.forward(request, response);
             } else {
                 response.sendRedirect("index.html");
             }
 
-            resultSet.close();
-            statement.close();
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
-            try {
-                resultSet.close();
-                statement.close();
-                connection.close();
-            } catch (SQLException eSql) {
-                e.printStackTrace();
-            }
 
+        } finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                if (statement != null)
+                    statement.close();
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException eSql) {
+                eSql.printStackTrace();
+            }
         }
     }
 
