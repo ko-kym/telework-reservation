@@ -24,23 +24,24 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>LoginController</servlet-name>
-    <url-pattern>/LoginController</url-pattern>
+    <url-pattern>/login</url-pattern>
+    <!-- <url-pattern>/LoginController</url-pattern> -->
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>LogoutController</servlet-name>
-    <url-pattern>/LogoutController</url-pattern>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ReservationController</servlet-name>
-    <url-pattern>/ReservationController</url-pattern>
+    <url-pattern>/reservation</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>RequestController</servlet-name>
-    <url-pattern>/RequestController</url-pattern>
+    <url-pattern>/request</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>EmployeeController</servlet-name>
-    <url-pattern>/EmployeeController</url-pattern>
+    <url-pattern>/employees</url-pattern>
   </servlet-mapping>
   <display-name>TeleworkReservation</display-name>
   <welcome-file-list>

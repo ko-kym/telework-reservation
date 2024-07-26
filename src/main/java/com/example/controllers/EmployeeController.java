@@ -10,12 +10,12 @@ import com.example.utils.DBController;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+// import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/employees")
+// @WebServlet("/employees")
 public class EmployeeController extends HttpServlet {
 
     @Override

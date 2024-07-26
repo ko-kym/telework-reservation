@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+// import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import jakarta.servlet.RequestDispatcher;
 
 import com.example.utils.DBController;
 
-@WebServlet("/reservation")
+// @WebServlet("/reservation")
 public class ReservationController extends HttpServlet {
     // 定数定義
     public static final String ROOM_VACANT = "予約可能"; // 空室
