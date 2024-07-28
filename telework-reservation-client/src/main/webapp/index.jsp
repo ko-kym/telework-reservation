@@ -1,0 +1,69 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <!DOCTYPE html>
+    <html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>テレワーク部屋申請ログイン画面</title>
+        <style>
+            .container {
+                width: 350px;
+                margin: 0 auto;
+                padding: 100px;
+                background-color: #FFFFFF;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                text-align: center;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 93%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            button[type="submit"] {
+                margin-top: 30px;
+                width: 100%;
+                padding: 10px;
+                background-color: navy;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            button[type="submit"]:hover {
+                background-color: #808080;
+            }
+
+            .fsize {
+                font-size: 1.6em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <form action="call-login" method="post">
+                <p class="fsize">テレワーク部屋申請<br>ログイン画面</p>
+                <% String errorMessage=(String) request.getAttribute("errorMessage"); if (errorMessage !=null) { %>
+                    <p class="error-message">
+                        <%= errorMessage %>
+                    </p>
+                    <% } %>
+                        <input type="text" placeholder="メール" name="email" required />
+                        <input type="password" placeholder="パスワード" name="password" required />
+                        <a href="指定したリンク先" class="link">
+                            <p>パスワードをお忘れの方はこちら</p>
+                        </a>
+                        <button type="submit">ログイン</button>
+            </form>
+        </div>
+    </body>
+
+    </html>
