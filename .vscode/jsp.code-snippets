@@ -1,0 +1,9 @@
+{
+    "JSP Page Directive": {
+        "prefix": "jsp",
+        "body": [
+            "<%@ page contentType=\"text/html;charset=UTF-8\" language=\"java\" %>"
+        ],
+        "description": "JSP Page Directive with UTF-8 encoding"
+    }
+}
