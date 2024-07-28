@@ -1,0 +1,5 @@
+### Login Request
+POST http://localhost:8080/telework-reservation-api-1.0/login
+Content-Type: application/x-www-form-urlencoded
+
+email=your-email@example.com&password=your-password
