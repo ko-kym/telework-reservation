@@ -33,12 +33,12 @@
     - email pw をサーバサイドにリクエスト `http://localhost:8080/login`
 - api
     - requestを受け取る
-    - session にemployeeIdを詰め込む
     - 認証処理
-    - responseをclientに返却
+    - responseをclientに返却(json -> javaのクラスをjava以外でも使えるようにするため ex:フロントエンド)
 - client
     - responseから成功か否か判定
         - 成功
+            - session にemployeeIdを詰め込む
             - カレンダー画面
         - 失敗
             - ログイン画面 + メッセージ表示
@@ -46,6 +46,21 @@
 - user
     - 画面みえた！！
     
+## sequence diagram
+
+```mermaid
+sequenceDiagram
+    participant Browser as Browser (User)
+    participant Client as Client
+    participant Api as Api
+
+    Browser->>Client: 1. request index.html (with / login page)
+    Client->>Browser: 2. response index.html (login page)
+    Browser->>Client: 3. request Login (login submit with email and pw)
+    Client->>Api: 4. request Login Api  (login submit with email and pw)
+    Api->>Client: 5.  response Login Api (with employeeInfo )
+    Client->>Browser: 6. response Login (index.html or calendar.html)
+```
 
 # Thymeleaf or JSP
 - JSP ← こいつ決めた！！
@@ -59,5 +74,27 @@
         - もしJSでReactとかにFrontend移行になった場合、移行作業がやりやすい
     - javaを未使用より割ときれいにかける
     - ...
+
+# design
+
+### GET `/employees` 
+
+#### Request Query Parameters
+
+| Name  | Type   | Nullable | Description                        |
+|-------|--------|----------|------------------------------------|
+| email | String | false     |   |
+| password | String | false     |   |
+
+#### Responses Parameters
+
+###### Success (200)
+
+| Name               | Type    | Nullable | Description                                                |
+|--------------------|---------|----------|------------------------------------------------------------|
+| employeeId       | String  | false    |  |
+| employeeName         | String | false    |  |
+| email | String | false    |  |
+| role | String | false    |  |
 
 ### 理由

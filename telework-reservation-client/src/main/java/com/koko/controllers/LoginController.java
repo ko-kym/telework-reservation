@@ -1,19 +1,22 @@
 package com.koko.controllers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.koko.dtos.EmployeeDto;
+import com.koko.dtos.ErrorResponse;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class LoginController extends HttpServlet {
 
@@ -23,19 +26,36 @@ public class LoginController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // api
-        String apiResponse = callLogin(email, password);
+        try {
+            HttpResponse<String> apiResponse = callLogin(email, password);
+            String body = apiResponse.body();
 
-        response.setContentType("text/html");
-        if (apiResponse.equals("login success")) {
+            String pathToForward = null;
+            response.setContentType("text/html");
+            ObjectMapper objectMapper = new ObjectMapper();
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/calendar.jsp");
+            if (apiResponse.statusCode() == HttpServletResponse.SC_OK) {
+                EmployeeDto employeeDto = objectMapper.readValue(body, EmployeeDto.class);
+                HttpSession session = request.getSession();
+                session.setAttribute("employeeDto", employeeDto);
+
+                pathToForward = "/WEB-INF/view/calendar.jsp";
+            } else if ((apiResponse.statusCode() == HttpServletResponse.SC_UNAUTHORIZED)) {
+                ErrorResponse errorResponse = objectMapper.readValue(body, ErrorResponse.class);
+                request.setAttribute("message", errorResponse.getMessage());
+                pathToForward = "/index.jsp";
+            } else {
+                ErrorResponse errorResponse = objectMapper.readValue(body, ErrorResponse.class);
+                request.setAttribute("message", errorResponse.getMessage());
+                pathToForward = "/error.jsp";
+            }
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher(pathToForward);
             dispatcher.forward(request, response);
 
-        } else {
-            request.setAttribute("errorMessage", "メールアドレスかパスワードが違います");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-            dispatcher.forward(request, response);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }
@@ -45,29 +65,18 @@ public class LoginController extends HttpServlet {
         this.doPost(req, resp);
     }
 
-    private String callLogin(String email, String password) throws IOException {
-        String endPoint = "http://localhost:8080/telework-reservation-api-1.0/login";
-        URL url;
-        try {
-            url = new URI(endPoint.concat("?email=").concat(email).concat("&password=").concat(password)).toURL();
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+    private HttpResponse<String> callLogin(String email, String password)
+            throws URISyntaxException, IOException, InterruptedException {
+        String endPoint = "http://localhost:8080/telework-reservation-api-1.0/employees";
+        String url = String.format("%s?email=%s&password=%s", endPoint, email, password);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(url))
+                .GET()
+                .build();
 
-            in.close();
-            return response.toString();
-
-        } catch (MalformedURLException | URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
 
     }
 }

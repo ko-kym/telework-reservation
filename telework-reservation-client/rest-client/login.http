@@ -1,0 +1,6 @@
+### Login Request
+
+@email=tanaka1@example.com
+@password=pass123
+
+POST http://localhost:8080/telework-reservation-client-1.0/call-login?email={{email}}&password={{password}}
