@@ -6,9 +6,17 @@
     <servlet-name>LoginController</servlet-name>
     <servlet-class>com.koko.controllers.LoginController</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LogoutController</servlet-name>
+    <servlet-class>com.koko.controllers.LogoutController</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoginController</servlet-name>
     <url-pattern>/call-login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LogoutController</servlet-name>
+    <url-pattern>/call-logout</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

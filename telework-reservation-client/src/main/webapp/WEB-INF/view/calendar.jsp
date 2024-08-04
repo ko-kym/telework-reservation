@@ -135,7 +135,7 @@
             <input type="hidden" id="selectedDate" name="date">
         </form>
         <div class="footer">
-            <a href="logout" class="btn">ログアウト</a>
+            <a href="call-logout" class="btn">ログアウト</a>
         </div>
 
     </body>
