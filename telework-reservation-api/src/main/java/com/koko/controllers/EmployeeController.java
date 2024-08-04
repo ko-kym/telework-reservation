@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koko.dtos.EmployeeDto;
-import com.koko.errors.ErrorResponse;
+import com.koko.dtos.ErrorResponse;
 import com.koko.services.EmployeeService;
 
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ public class EmployeeController extends HttpServlet {
 
         if (email == null || password == null) {
             ErrorResponse badRequestResponse = new ErrorResponse(HttpServletResponse.SC_BAD_REQUEST,
-                    "Email and password are required.");
+                    "メールアドレスとパスワードは必須です。");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print(mapper.writeValueAsString(badRequestResponse));
             return;
@@ -45,7 +45,7 @@ public class EmployeeController extends HttpServlet {
 
             } else {
                 ErrorResponse unauthorizedResponse = new ErrorResponse(HttpServletResponse.SC_UNAUTHORIZED,
-                        "Invalid email or password.");
+                        "無効なメールアドレスまたはパスワードです。");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.print(mapper.writeValueAsString(unauthorizedResponse));
                 return;
@@ -55,7 +55,7 @@ public class EmployeeController extends HttpServlet {
 
         } catch (ClassNotFoundException | SQLException e) {
             ErrorResponse internalServerErrorResponse = new ErrorResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Internal server error.");
+                    "内部サーバーエラー。");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print(mapper.writeValueAsString(internalServerErrorResponse));
         }

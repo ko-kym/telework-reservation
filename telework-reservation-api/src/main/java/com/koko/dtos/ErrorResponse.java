@@ -1,4 +1,4 @@
-package com.koko.errors;
+package com.koko.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

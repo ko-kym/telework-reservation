@@ -51,7 +51,7 @@
         <div class="container">
             <form action="call-login" method="post">
                 <p class="fsize">テレワーク部屋申請<br>ログイン画面</p>
-                <% String errorMessage=(String) request.getAttribute("errorMessage"); if (errorMessage !=null) { %>
+                <% String errorMessage=(String) request.getAttribute("message"); if (errorMessage !=null) { %>
                     <p class="error-message">
                         <%= errorMessage %>
                     </p>
