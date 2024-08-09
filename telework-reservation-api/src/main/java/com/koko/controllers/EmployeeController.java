@@ -10,10 +10,12 @@ import com.koko.dtos.ErrorResponse;
 import com.koko.services.EmployeeService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@WebServlet("/employees")
 public class EmployeeController extends HttpServlet {
 
     @Override
