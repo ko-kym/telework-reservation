@@ -3,6 +3,7 @@ package com.koko.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,26 +21,24 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/employees")
 public class EmployeeController extends HttpServlet {
+    Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        Logger logger = LoggerFactory.getLogger(EmployeeController.class);
         logger.info("Received request for /employees endpoint.");
-        logger.debug("Request parameters: email={}, password={}",
-                request.getParameter("email"),
-                request.getParameter("password"));
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
+        logger.debug("Request parameters: email={}, password={}", email, password);
 
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        if (email == null || password == null) {
+        if (Objects.isNull(email) || Objects.isNull(password)) {
             ErrorResponse badRequestResponse = new ErrorResponse(HttpServletResponse.SC_BAD_REQUEST,
                     "Email and password are required.");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -51,7 +50,7 @@ public class EmployeeController extends HttpServlet {
         try {
             EmployeeDto employeeDto = EmployeeService.verifyCredentials(email, password);
 
-            if (employeeDto != null) {
+            if (Objects.nonNull(employeeDto)) {
                 String json = mapper.writeValueAsString(employeeDto);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(json);
@@ -74,7 +73,7 @@ public class EmployeeController extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print(mapper.writeValueAsString(internalServerErrorResponse));
             logger.error("Internal server error while processing request for /employees.", e);
-            
+
         } finally {
             logger.info("Completed processing of request for /employees.");
         }
