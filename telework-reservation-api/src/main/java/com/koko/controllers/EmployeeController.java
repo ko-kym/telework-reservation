@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koko.dtos.EmployeeDto;
 import com.koko.dtos.ErrorResponse;
@@ -21,6 +24,13 @@ public class EmployeeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+        logger.info("Received request for /employees endpoint.");
+        logger.debug("Request parameters: email={}, password={}",
+                request.getParameter("email"),
+                request.getParameter("password"));
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -31,9 +41,10 @@ public class EmployeeController extends HttpServlet {
 
         if (email == null || password == null) {
             ErrorResponse badRequestResponse = new ErrorResponse(HttpServletResponse.SC_BAD_REQUEST,
-                    "メールアドレスとパスワードは必須です。");
+                    "Email and password are required.");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print(mapper.writeValueAsString(badRequestResponse));
+            logger.warn("Request failed: Email and password are required.");
             return;
         }
 
@@ -44,12 +55,14 @@ public class EmployeeController extends HttpServlet {
                 String json = mapper.writeValueAsString(employeeDto);
                 response.setStatus(HttpServletResponse.SC_OK);
                 out.print(json);
+                logger.info("Successfully processed request for /employees.");
 
             } else {
                 ErrorResponse unauthorizedResponse = new ErrorResponse(HttpServletResponse.SC_UNAUTHORIZED,
-                        "無効なメールアドレスまたはパスワードです。");
+                        "Invalid email or password.");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.print(mapper.writeValueAsString(unauthorizedResponse));
+                logger.warn("Request failed: Invalid email or password.");
                 return;
             }
 
@@ -57,10 +70,13 @@ public class EmployeeController extends HttpServlet {
 
         } catch (ClassNotFoundException | SQLException e) {
             ErrorResponse internalServerErrorResponse = new ErrorResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "内部サーバーエラー。");
+                    "Internal server error.");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print(mapper.writeValueAsString(internalServerErrorResponse));
+            logger.error("Internal server error while processing request for /employees.", e);
+            
+        } finally {
+            logger.info("Completed processing of request for /employees.");
         }
     }
-
 }
