@@ -12,10 +12,11 @@ import com.koko.dtos.EmployeeDto;
 import com.koko.utils.DBUtil;
 
 public class EmployeeService {
-    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
-    public static EmployeeDto verifyCredentials(String email, String password)
+    public EmployeeDto verifyCredentials(String email, String password)
             throws ClassNotFoundException, SQLException {
+        Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+
         logger.info("Verifying credentials for email: {}", email);
         String sql = "SELECT employee_id,employee_name,email,role FROM employees WHERE email = ? AND password = ?;";
 
@@ -34,7 +35,7 @@ public class EmployeeService {
 
                 logger.info("Successfully verified credentials for email: {}", email);
                 return employeeDto;
-                
+
             } else {
                 logger.warn("Failed to verify credentials: Invalid email or password for email: {}", email);
                 return null;
