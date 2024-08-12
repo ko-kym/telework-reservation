@@ -2,30 +2,38 @@ package com.koko.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.sql.SQLException;
+
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.web.HttpRequestHandler;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.koko.dtos.EmployeeDto;
 import com.koko.dtos.ErrorResponse;
 import com.koko.services.EmployeeService;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/employees")
-public class EmployeeController extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+public class EmployeeController implements HttpRequestHandler {
+
+    private EmployeeService employeeService;
+
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Logger logger = LoggerFactory.getLogger(EmployeeController.class);
         logger.info("Received request for /employees endpoint.");
 
         String email = request.getParameter("email");
@@ -48,7 +56,7 @@ public class EmployeeController extends HttpServlet {
         }
 
         try {
-            EmployeeDto employeeDto = EmployeeService.verifyCredentials(email, password);
+            EmployeeDto employeeDto = employeeService.verifyCredentials(email, password);
 
             if (Objects.nonNull(employeeDto)) {
                 String json = mapper.writeValueAsString(employeeDto);
