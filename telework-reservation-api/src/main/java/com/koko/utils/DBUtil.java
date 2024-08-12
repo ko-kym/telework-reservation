@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBUtil {
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
+    public Connection getConnection() throws SQLException, ClassNotFoundException {
         final String DB_URL = "jdbc:postgresql://localhost:5432/teleworkreservations";
         final String DB_USER = "postgres";
         final String DB_PASSWORD = "postgres";
