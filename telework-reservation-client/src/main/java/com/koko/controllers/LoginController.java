@@ -13,36 +13,33 @@ import com.koko.dtos.ErrorResponse;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/call-login")
-public class LoginController extends HttpServlet {
+import org.springframework.web.HttpRequestHandler;
+
+public class LoginController implements HttpRequestHandler {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String pathToForward = "/index.jsp";
 
         try {
             HttpResponse<String> apiResponse = callLogin(email, password);
             String body = apiResponse.body();
 
-            String pathToForward = null;
-            response.setContentType("text/html");
-            ObjectMapper objectMapper = new ObjectMapper();
-
             if (apiResponse.statusCode() == HttpServletResponse.SC_OK) {
                 EmployeeDto employeeDto = objectMapper.readValue(body, EmployeeDto.class);
                 HttpSession session = request.getSession();
                 session.setAttribute("employeeDto", employeeDto);
-
                 pathToForward = "/WEB-INF/view/calendar.jsp";
-            } else if ((apiResponse.statusCode() == HttpServletResponse.SC_UNAUTHORIZED)) {
+            } else if (apiResponse.statusCode() == HttpServletResponse.SC_UNAUTHORIZED) {
                 ErrorResponse errorResponse = objectMapper.readValue(body, ErrorResponse.class);
                 request.setAttribute("message", errorResponse.getMessage());
                 pathToForward = "/index.jsp";
@@ -52,19 +49,14 @@ public class LoginController extends HttpServlet {
                 pathToForward = "/error.jsp";
             }
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher(pathToForward);
-            dispatcher.forward(request, response);
-
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            request.setAttribute("message", "An error occurred while processing your request.");
+            pathToForward = "/error.jsp";
         }
 
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.doPost(req, resp);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pathToForward);
+        dispatcher.forward(request, response);
     }
 
     private HttpResponse<String> callLogin(String email, String password)
@@ -79,6 +71,5 @@ public class LoginController extends HttpServlet {
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
-
     }
 }
