@@ -1,17 +1,9 @@
-DELETE FROM reservations;
-
-DELETE FROM rooms;
-
-DELETE FROM employees;
-
-ALTER SEQUENCE rooms_room_id_seq
-RESTART WITH 1;
-
-ALTER SEQUENCE reservations_reservation_id_seq
-RESTART WITH 1;
+DELETE FROM office_reservation.employees;
+DELETE FROM office_reservation.rooms;
+DELETE FROM office_reservation.reservations;
 
 INSERT INTO
-    employees (employee_id, employee_name, email, password, role)
+    office_reservation.employees (employee_id, employee_name, email, password, role)
 VALUES
     (
         'E0001',
@@ -154,65 +146,65 @@ VALUES
         'NOT_ADMIN'
     );
 
-INSERT INTO
-    rooms (room_name)
+INSERT INTO 
+    office_reservation.rooms (room_id, room_name)
 VALUES
-    ('101'),
-    ('102'),
-    ('103'),
-    ('104'),
-    ('105'),
-    ('106'),
-    ('107'),
-    ('108'),
-    ('109'),
-    ('110'),
-    ('111'),
-    ('112'),
-    ('113'),
-    ('114'),
-    ('115'),
-    ('116'),
-    ('117'),
-    ('118'),
-    ('119'),
-    ('120');
+    ('R001', '101'),
+    ('R002', '102'),
+    ('R003', '103'),
+    ('R004', '104'),
+    ('R005', '105'),
+    ('R006', '106'),
+    ('R007', '107'),
+    ('R008', '108'),
+    ('R009', '109'),
+    ('R010', '110'),
+    ('R011', '111'),
+    ('R012', '112'),
+    ('R013', '113'),
+    ('R014', '114'),
+    ('R015', '115'),
+    ('R016', '116'),
+    ('R017', '117'),
+    ('R018', '118'),
+    ('R019', '119'),
+    ('R020', '120');
 
-INSERT INTO
-    reservations (employee_id, room_id, reservation_date, status)
+INSERT INTO 
+    office_reservation.reservations (reservation_id, employee_id, room_id, reservation_date, status)
 VALUES
-    ('E0001', 1, '2024-08-01', 'RESERVED'),
-    ('E0002', 2, '2024-08-01', 'RESERVED'),
-    ('E0003', 3, '2024-08-01', 'RESERVED'),
-    ('E0004', 4, '2024-08-01', 'RESERVED'),
-    ('E0002', 2, '2024-08-02', 'PENDING'),
-    ('E0003', 3, '2024-08-02', 'PENDING'),
-    ('E0002', 4, '2024-08-02', 'PENDING'),
-    ('E0003', 3, '2024-08-03', 'RESERVED'),
-    ('E0004', 4, '2024-08-04', 'PENDING'),
-    ('E0005', 5, '2024-08-05', 'RESERVED'),
-    ('E0006', 6, '2024-08-06', 'PENDING'),
-    ('E0007', 7, '2024-08-07', 'RESERVED'),
-    ('E0008', 8, '2024-08-08', 'PENDING'),
-    ('E0009', 9, '2024-08-09', 'RESERVED'),
-    ('E0010', 10, '2024-08-10', 'PENDING'),
-    ('E0011', 11, '2024-08-11', 'RESERVED'),
-    ('E0012', 12, '2024-08-12', 'PENDING'),
-    ('E0013', 13, '2024-08-13', 'RESERVED'),
-    ('E0014', 14, '2024-08-14', 'PENDING'),
-    ('E0015', 15, '2024-08-15', 'RESERVED'),
-    ('E0016', 16, '2024-08-16', 'PENDING'),
-    ('E0017', 17, '2024-08-17', 'RESERVED'),
-    ('E0018', 18, '2024-08-18', 'PENDING'),
-    ('E0019', 19, '2024-08-19', 'RESERVED'),
-    ('E0020', 20, '2024-08-20', 'PENDING'),
-    ('E0001', 1, '2024-09-15', 'RESERVED'),
-    ('E0002', 2, '2024-09-15', 'RESERVED'),
-    ('E0003', 3, '2024-09-15', 'RESERVED'),
-    ('E0004', 4, '2024-09-15', 'RESERVED'),
-    ('E0002', 2, '2024-09-17', 'PENDING'),
-    ('E0003', 3, '2024-09-17', 'PENDING'),
-    ('E0002', 4, '2024-09-17', 'PENDING'),
-    ('E0003', 3, '2024-10-03', 'RESERVED'),
-    ('E0004', 4, '2024-10-04', 'PENDING'),
-    ('E0005', 5, '2024-11-05', 'RESERVED');
+    ('RE001', 'E0001', 'R001', '2024-10-01', 'RESERVED'),
+    ('RE002', 'E0002', 'R002', '2024-10-01', 'RESERVED'),
+    ('RE003', 'E0003', 'R003', '2024-10-01', 'RESERVED'),
+    ('RE004', 'E0004', 'R004', '2024-10-01', 'RESERVED'),
+    ('RE005', 'E0002', 'R002', '2024-10-02', 'PENDING'),
+    ('RE006', 'E0003', 'R003', '2024-10-02', 'PENDING'),
+    ('RE007', 'E0002', 'R004', '2024-10-02', 'PENDING'),
+    ('RE008', 'E0003', 'R003', '2024-10-03', 'RESERVED'),
+    ('RE009', 'E0004', 'R004', '2024-10-04', 'PENDING'),
+    ('RE010', 'E0005', 'R005', '2024-10-05', 'RESERVED'),
+    ('RE011', 'E0006', 'R006', '2024-10-06', 'PENDING'),
+    ('RE012', 'E0007', 'R007', '2024-10-07', 'RESERVED'),
+    ('RE013', 'E0008', 'R008', '2024-10-08', 'PENDING'),
+    ('RE014', 'E0009', 'R009', '2024-10-09', 'RESERVED'),
+    ('RE015', 'E0010', 'R010', '2024-10-10', 'PENDING'),
+    ('RE016', 'E0011', 'R011', '2024-10-11', 'RESERVED'),
+    ('RE017', 'E0012', 'R012', '2024-10-12', 'PENDING'),
+    ('RE018', 'E0013', 'R013', '2024-10-13', 'RESERVED'),
+    ('RE019', 'E0014', 'R014', '2024-10-14', 'PENDING'),
+    ('RE020', 'E0015', 'R015', '2024-10-15', 'RESERVED'),
+    ('RE021', 'E0016', 'R016', '2024-10-16', 'PENDING'),
+    ('RE022', 'E0017', 'R017', '2024-10-17', 'RESERVED'),
+    ('RE023', 'E0018', 'R018', '2024-10-18', 'PENDING'),
+    ('RE024', 'E0019', 'R019', '2024-10-19', 'RESERVED'),
+    ('RE025', 'E0020', 'R020', '2024-10-20', 'PENDING'),
+    ('RE026', 'E0001', 'R001', '2024-11-15', 'RESERVED'),
+    ('RE027', 'E0002', 'R002', '2024-11-15', 'RESERVED'),
+    ('RE028', 'E0003', 'R003', '2024-11-15', 'RESERVED'),
+    ('RE029', 'E0004', 'R004', '2024-11-15', 'RESERVED'),
+    ('RE030', 'E0002', 'R002', '2024-11-17', 'PENDING'),
+    ('RE031', 'E0003', 'R003', '2024-11-17', 'PENDING'),
+    ('RE032', 'E0002', 'R004', '2024-11-17', 'PENDING'),
+    ('RE033', 'E0003', 'R003', '2024-12-03', 'RESERVED'),
+    ('RE034', 'E0004', 'R004', '2024-12-04', 'PENDING'),
+    ('RE035', 'E0005', 'R005', '2024-12-05', 'RESERVED');

@@ -25,7 +25,7 @@ public class EmployeeService {
         Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
         logger.info("Verifying credentials for email: {}", email);
-        String sql = "SELECT employee_id,employee_name,email,role FROM employees WHERE email = ? AND password = ?;";
+        String sql = "SELECT employee_id,employee_name,email,role FROM office_reservation.employees WHERE email = ? AND password = ?;";
 
         try (
                 Connection connection = dbUtil.getConnection();

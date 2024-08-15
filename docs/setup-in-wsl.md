@@ -40,7 +40,12 @@
 - `sdk list maven` ← どのmavenのVersionをInstallするか確認
 - `sdk isntall maven 3.9.8`
 - 基本的にDefault
-### postgres
+### docker-postgres
+- currentディレクトリに`docker-compose.yml`があるか確認
+- ` docker -v` : Docker version xx.x.x, build xxxxxxx
+- ` docker-compose -v` : Docker Compose version v2.xx.x-desktop.1
+- ` docker-compose up -d`
+### postgres(in wsl) 
 - `sudo apt update`
 - `sudo apt install postgresql postgresql-contrib`
 - `sudo -i -u postgres` ← postgresユーザーに変更
