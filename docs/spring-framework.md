@@ -11,3 +11,58 @@
 
 ## What is Servlet?
 
+## Tomcat only
+
+```mermaid
+    graph LR
+        subgraph localhost
+            subgraph Tomcat:8080
+                subgraph App
+                    subgraph api
+                        employeeServlet[employee servlet]
+                    end
+                    subgraph client
+                        loginServlet[login servlet]
+                    end
+                end
+            end
+        end
+
+        User[👤 User]
+
+        User -- request --> loginServlet
+        loginServlet -- request --> employeeServlet
+        employeeServlet -- response --> loginServlet
+        loginServlet -- response --> User
+```
+
+## Tomcat with spring framework
+
+```mermaid
+    graph LR
+        subgraph localhost
+            subgraph Tomcat:8080
+                subgraph App
+                    subgraph api
+                        employeeServlet[employee servlet]
+                        dispatchApiServlet[dispatch api servlet]
+                    end
+                    subgraph client
+                        loginServlet[login servlet]
+                        dispatchClientServlet[dispatch client servlet]
+                    end
+                end
+            end
+        end
+
+        User[👤 User]
+
+        User -- request --> dispatchClientServlet
+        dispatchClientServlet -- request --> loginServlet
+        loginServlet -- request --> dispatchApiServlet
+        dispatchApiServlet -- request --> employeeServlet
+        employeeServlet -- response --> dispatchApiServlet
+        dispatchApiServlet -- response --> loginServlet
+        loginServlet -- response --> dispatchClientServlet
+        dispatchClientServlet -- response --> User
+```
