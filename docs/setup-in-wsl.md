@@ -45,6 +45,7 @@
 - ` docker -v` : Docker version xx.x.x, build xxxxxxx
 - ` docker-compose -v` : Docker Compose version v2.xx.x-desktop.1
 - ` docker-compose up -d`
+- `docker-compose down`
 ### postgres(in wsl) 
 - `sudo apt update`
 - `sudo apt install postgresql postgresql-contrib`
