@@ -28,7 +28,7 @@ public class LoginController implements HttpRequestHandler {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         ObjectMapper objectMapper = new ObjectMapper();
-        String pathToForward = "/index.jsp";
+        String pathToForward = "/WEB-INF/view/index.jsp";
 
         try {
             HttpResponse<String> apiResponse = callLogin(email, password);
@@ -42,7 +42,7 @@ public class LoginController implements HttpRequestHandler {
             } else if (apiResponse.statusCode() == HttpServletResponse.SC_UNAUTHORIZED) {
                 ErrorResponse errorResponse = objectMapper.readValue(body, ErrorResponse.class);
                 request.setAttribute("message", errorResponse.getMessage());
-                pathToForward = "/index.jsp";
+                pathToForward = "/WEB-INF/view/index.jsp";
             } else {
                 ErrorResponse errorResponse = objectMapper.readValue(body, ErrorResponse.class);
                 request.setAttribute("message", errorResponse.getMessage());
